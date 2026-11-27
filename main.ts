@@ -1,6 +1,7 @@
-// main.ts — entry program for the news-image-20261126 bounty.
+// main.ts — entry program for the news-image-20261126 bounty (v2 rebuild).
 // The image is a finished 1024x1024 PNG built in this repository
-// (page.html rendered to entry.png with a headless browser).
+// (drawn with Python + Pillow from structured story data; see
+// NEWS-IMAGE-26-V2-BUILD.md for the build notes).
 // This program only copies that image to the output directory,
 // so both runs write byte-identical output. Node stdlib only,
 // no network, no environment reads beyond the output directory.

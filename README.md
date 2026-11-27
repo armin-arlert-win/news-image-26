@@ -55,6 +55,41 @@ spiral anti-collision map labels). No browser, no network, no AI
 photos — every picture is an original drawing. Build scripts and data
 are kept outside this repo; see `NEWS-IMAGE-26-V2-BUILD.md`.
 
+## v2: Pillow rebuild — why the leads are pictures, not numbers
+
+v1 was rendered by screenshotting an HTML page in Chrome. v2 is drawn
+direct to a pixel canvas with Python + Pillow: one `STORIES` list is
+the single source of truth (masthead counts, the numbers strip and the
+map pins are all computed from it), one scene-painter function draws
+each story, and a layout solver fits the page by trimming ALSO items
+from the bottom — it never shrinks fonts. The three leads are full
+scenes: an orange explosion over the Kuwait skyline (banner: IRAN
+DENIES ROLE), a dark burning city under missile trails over Kyiv, and
+a departures board over the storm. At 300 px each lead still reads as
+a different picture, where v1's leads read as red numbers. The world
+map is drawn from hand-written continent polygons with pins at real
+longitude and latitude and spiral anti-collision label placement
+(minimum label gap 17.0 px).
+
+The copy fixes come from a direct comparison with the top 5 entries of
+the 26 Nov edition (SHARP-BRIEF): the Kuwait headline is neutral
+("Two Italians killed in Kuwait drone strike") with the contested
+attribution carried only as the denial banner in the art; the Kyiv copy
+restores the grain ships the v1 build dropped ("two grain ships are
+struck"); the storm uses the AP figures (60 mph gusts, 600,000+
+without power) instead of the higher evening figures, so nothing reads
+as hype. 35 stories are shown (3 leads + 10 briefs + 22 ALSO); the
+data file holds 40 and the solver cuts ALSO 36–40.
+
+### Copy budget (learned from this build)
+
+The layout only fits when copy obeys tight limits: lead headlines
+≤ ~34 characters in capitals, lead details ≤ ~96 characters (two
+lines), card headlines ≤ ~37 characters, card bodies ≤ ~66
+characters, timeline labels ≤ ~16 characters. Longer copy overflows
+the page even with zero ALSO items. The comfortable capacity is 35
+stories shown, not 40.
+
 ## The program
 
 `main.ts` (Node 24, stdlib only, no network) copies `entry.png` to
@@ -66,6 +101,22 @@ mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
 ```
 
 Two runs write byte-identical output (verified).
+
+## Files in this repo
+
+- `entry.png` — the newspaper image (1024×1024, 285,249 bytes)
+- `main.ts` — copies `entry.png` to the output directory (Node 24,
+  stdlib only, no network)
+- `README.md` — this file: what the image shows, how it was made,
+  and how to run it
+- `LICENSE` — MIT
+- `.makefun/owner.json` — payout wallet for the entry
+- `NEWS-IMAGE-26-V2-BUILD.md` — build notes: story list, the
+  scene-painters used for the three leads, and the verification log
+
+The build scripts and story data (`draw.py`, `verify.py`,
+`stories.py`) are kept outside this repo, so the entry stays a
+clean six-file snapshot.
 
 ## Verification (27 Nov 2026)
 
